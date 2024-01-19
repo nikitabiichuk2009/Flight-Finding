@@ -2390,8 +2390,85 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
                 <form action="/find_flight" method="POST" class="mbr-form form-with-styler" data-form-title="Form Name"><input type="hidden" name="email" data-form-email="true" value="">
-
+                <% if (locals.data){%>
+                  <div class="dragArea row">
+                    <div class="col-md col-sm-12 form-group mb-3" data-for="name">
+                      <div id="error-display"></div>
+                      <input type="text" name="name" placeholder="Full Name" value="<%= data.name %>" data-form-field="name" class="form-control"  id="name-form02-0" minlength="10" maxlength="40" required>
+                    </div>
                     
+                    <div class="col-md col-sm-12 form-group mb-3" data-for="email">
+                      <input type="email" name="email" placeholder="Email" value="<%= data.email[1] %>" data-form-field="email" class="form-control"  id="email-form02-0" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                      title="Please enter a valid email address" required>
+                    </div>
+                  </div>
+                  <div class="dragArea row">
+                    <div class="col-sm-12 col-md-6 form-group mb-3" data-for="city_from">
+                      <input type="text" name="city_from" placeholder="City You Fly From"  data-form-field="city_from" class="form-control" value="" id="city_from-form02-0" minlength="3" maxlength="70" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group mb-3" data-for="city_to">
+                      <input type="text" name="city_to" placeholder="City You Fly To" data-form-field="city_to" class="form-control" value="" id="city_to-form02-1" minlength="3" maxlength="70" required>
+                    </div>
+                  </div>
+
+                  <div class="dragArea row">
+                    <div class="col-sm-12 col-md-6 form-group mb-3" data-for="adults_num">
+                      <label for="date_from-form02-0">Date When You Fly From</label>
+                      <input type="date" name="date_from" placeholder="Date You Fly From" data-form-field="city_from" class="form-control"  id="date_from-form02-0" required>
+                    </div>
+                    <div class="col-sm-12 col-md-6 form-group mb-3" data-for="child_num">
+                      <label for="date_to-form02-1">Date When You Want To Come Back</label>
+                      <input type="date" name="date_to" placeholder="Date You Want To Come Back" data-form-field="date_to" class="form-control"  id="date_to-form02-1" required>
+                    </div>
+                  </div>
+                  <div class="dragArea row">
+                    <div class="col-6 col-md-6 form-group mb-3" data-for="adults_num">
+                      <input type="number" name="adults_num" placeholder="Adults" value="<%= data.adults %>" data-form-field="adults" class="form-control" min="1" max="4"  id="adults-form02-0" required>
+                    </div>
+                    <div class="col-6 col-md-6 form-group mb-3" data-for="child_num">
+                      <input type="number" name="child_num" placeholder="Children" value="<%= data.children %>" data-form-field="children" class="form-control" min="0" max="4"  id="child-form02-1" required>
+                    </div>
+                  </div>
+                  <div class="dragArea row">
+                    <div class="col-12 col-md-6 form-group mb-3" data-for="adults_num">
+                      <select name="curr" class="form-control" id="curr-form02-0" required>
+                        <option style="color: #6A7EFC; font-weight: 900;" value="" disabled>Select Currency</option>
+                        <% const currencies = [
+                        'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM',
+                        'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BTC',
+                        'BTN', 'BWP', 'BYN', 'BZD', 'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'COP',
+                        'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EEK', 'EGP',
+                        'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP', 'GHS', 'GIP', 'GMD',
+                        'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'IMP',
+                        'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR',
+                        'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL',
+                        'LTL', 'LVL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO',
+                        'MTL', 'MUR', 'MVR', 'MWK', 'MXN', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK',
+                        'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR',
+                        'QUN', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD',
+                        'SHP', 'SLL', 'SOS', 'SRD', 'STD', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT',
+                        'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS',
+                        'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMK',
+                        'ZMW', 'ZWL'
+                      ]; %>
+                        <% currencies.forEach(currency => { %>
+                            <option value="<%= currency %>" <%= data.currency === currency ? 'selected' : '' %>><%= currency %></option>
+                        <% }); %>
+                    </select>
+                                         
+                    </div>
+                    <div class="col-12 col-md-6 form-group mb-3" data-for="adults_num">
+                      <input type="number" name="stop" value="<%= data.stop %>" placeholder="Max amount of Stopovers" data-form-field="curr" class="form-control" min="0" max="10"  id="stop-form02-0" required>
+                    </div>
+
+                  </div>
+              <div class="dragArea row">                    
+                <div class="col-12 col-md-12 form-group mb-3" data-for="child_num">
+                    <input type="number" name="price" value="<%= data.price %>" placeholder="Price You Count on" data-form-field="children" class="form-control" min="1" max="10000000"  id="child-form02-1" required>
+                  </div>
+              </div>
+
+                  <%} else{ %>
                     <div class="dragArea row">
                       <div class="col-md col-sm-12 form-group mb-3" data-for="name">
                         <div id="error-display"></div>
@@ -2615,6 +2692,9 @@
                     </div>
                 </div>
 
+                    <% } %>
+                    
+                    
                     
                     <div class="col-lg-12 col-md-12 col-sm-12 align-center mbr-section-btn">
                       <button id="submit-button" type="submit" class="btn btn-primary display-7">Send</button>
