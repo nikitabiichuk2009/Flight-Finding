@@ -54,8 +54,26 @@ app.get("/", async (req, res) => {
 app.post("/find_flight", async (req, res) => {
     var city_from = req.body.city_from;
     var city_to = req.body.city_to;
+    var name = req.body.name;
+    var email = req.body.email;
+    var adults_num = req.body.adults_num;
+    var children_num = req.body.child_num;
+    var currency = req.body.curr;
+    var stopovers = req.body.stop;
+    var price = req.body.price;
+    var date_to = req.body.date_to;
+    var date_from = req.body.date_from;
+    var new_dict = {
+          name: name,
+          email: email,
+          adults: adults_num,
+          children: children_num,
+          currency: currency,
+          stop:  stopovers,
+          price: price,   
+    }
     if (dataList.includes(city_from) || dataList.includes(city_to)) {
-        res.render("index.ejs", { error: "Oh, there is a war in Ukraine(. Type another cities.", section: "find_form" });
+        res.render("index.ejs", { error: "Oh, there is a war in Ukraine(. Type another cities.", section: "find_form", data: new_dict });
     } else{try {
         const responseTo = await axios.get("https://api.tequila.kiwi.com/locations/query?term=" + city_to +  "&location_types=city", config );
         const result1 = responseTo.data;
@@ -64,26 +82,18 @@ app.post("/find_flight", async (req, res) => {
         const result2 = responseFrom.data;
         // console.log(result2);
         if (result1.locations.length === 0 && result2.locations.length === 0) {
-            res.render("index.ejs", {error: "Type valid Locations", section: "find_form"});
+            res.render("index.ejs", {error: "Type valid Locations", section: "find_form", data: new_dict});
         } else if (result2.locations.length === 0){
-            res.render("index.ejs", {error: "Type valid City You Fly from", section: "find_form"});
+            res.render("index.ejs", {error: "Type valid City You Fly from", section: "find_form", data: new_dict});
         } else if (result1.locations.length === 0 ){
-            res.render("index.ejs", {error: "Type valid City You Fly to", section: "find_form"});
+            res.render("index.ejs", {error: "Type valid City You Fly to", section: "find_form", data: new_dict});
         } else{
             console.log('success')
             var city_from_code = result2.locations[0].code;
             var city_to_code = result1.locations[0].code;
             console.log(city_from_code);
             console.log(city_to_code)
-            var name = req.body.name;
-            var email = req.body.email;
-            var adults_num = req.body.adults_num;
-            var children_num = req.body.child_num;
-            var currency = req.body.curr;
-            var stopovers = req.body.stop;
-            var price = req.body.price;
-            var date_to = req.body.date_to;
-            var date_from = req.body.date_from;
+            
             
             var dateToObj_to = new Date(date_to);            
             var year_to = dateToObj_to.getFullYear();
@@ -120,7 +130,7 @@ app.post("/find_flight", async (req, res) => {
                         transporter.sendMail(mailOptionsHigher, (error, info) => {
                           if (error) {
                             console.error('Error sending email:', error.message);
-                            res.render("index.ejs", {error: "Error sending email: Type valid Email.", section: "find_form"});
+                            res.render("index.ejs", {error: "Error sending email: Type valid Email.", section: "find_form", data: new_dict});
 
                           } else {
                             res.render('index.ejs', { not_success: `Unfortunately, the flight with the desired price wasn't found. For more details, check your email.` });
@@ -140,7 +150,7 @@ app.post("/find_flight", async (req, res) => {
                         transporter.sendMail(mailOptionsLower, (error, info) => {
                           if (error) {
                             console.error('Error sending email:', error.message);
-                            res.render("index.ejs", {error: "Error sending email: Type valid Email.", section: "find_form"});
+                            res.render("index.ejs", {error: "Error sending email: Type valid Email.", section: "find_form", data: new_dict});
 
                           } else {
                             res.render('index.ejs', { success: 'The flight with the desired price was found, Check your email!' });
@@ -151,7 +161,7 @@ app.post("/find_flight", async (req, res) => {
                     } }
                 catch (error) {
                     console.log(error.message)
-                    res.render("index.ejs", {error: "Some error occurred. Try to Type valid range of Dates or Another City!", section: "find_form"});
+                    res.render("index.ejs", {error: "Some error occurred. Try to Type valid range of Dates or Another City!", section: "find_form", data: new_dict});
                 }
             }
             
