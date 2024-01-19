@@ -151,7 +151,7 @@ app.post("/find_flight", async (req, res) => {
                     } }
                 catch (error) {
                     console.log(error.message)
-                    res.render("index.ejs", {error: "Some error occured. Try to Type valid range of Dates", section: "find_form"});
+                    res.render("index.ejs", {error: "Some error occurred. Try to Type valid range of Dates or Another City!", section: "find_form"});
                 }
             }
             
