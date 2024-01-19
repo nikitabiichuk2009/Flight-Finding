@@ -101,6 +101,7 @@ app.post("/find_flight", async (req, res) => {
             var day_to = dateToObj_to.getDate().toString().padStart(2, '0');
             var new_date_to = `${day_to}/${month_to}/${year_to}`;
             
+            
             var dateToObj_from = new Date(date_from);            
             var year_from = dateToObj_from.getFullYear();
             var month_from = (dateToObj_from.getMonth() + 1).toString().padStart(2, '0');
@@ -110,7 +111,14 @@ app.post("/find_flight", async (req, res) => {
             console.log(new_date_to);
             console.log(new_date_from);
                 try {
-                    var url = `https://api.tequila.kiwi.com/search?fly_from=${city_from_code}&fly_to=${city_to_code}&date_from=${new_date_from}&date_to=${new_date_from}&return_from=${new_date_to}&return_to=${new_date_to}&adults=${adults_num}&children=${children_num}&curr=${currency}&max_stopovers=${stopovers}&one_for_city=1`;
+                  let url;
+                  if (new_date_to === "NaN/NaN/NaN"){
+                     url = `https://api.tequila.kiwi.com/search?fly_from=${city_from_code}&fly_to=${city_to_code}&date_from=${new_date_from}&date_to=${new_date_from}&adults=${adults_num}&children=${children_num}&curr=${currency}&max_stopovers=${stopovers}&one_for_city=1`;
+
+                  } else{
+                     url = `https://api.tequila.kiwi.com/search?fly_from=${city_from_code}&fly_to=${city_to_code}&date_from=${new_date_from}&date_to=${new_date_from}&return_from=${new_date_to}&return_to=${new_date_to}&adults=${adults_num}&children=${children_num}&curr=${currency}&max_stopovers=${stopovers}&one_for_city=1`;
+
+                  }
                     console.log(url)
                     const result = await axios.get(url, config);       
                     console.log(result.data);
